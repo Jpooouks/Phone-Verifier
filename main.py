@@ -10,7 +10,11 @@ from googleapiclient.errors import HttpError
 
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
-SPREADSHEET_ID = '1SCWW2SugKsNoyzoAKYwDUxGdiOmEyRuD_y4gv8qmtqI'
+SPREADSHEET_ID = 'Spreadsheet_ID'
+PAGE_MOBILE_COL = 'PAGE_MOBILE_COL' # Example 'Page1!C'
+PAGE_LANDLINE_COL = 'PAGE_LANDLINE_COL'
+PAGE_INPUT_COL = 'PAGE_INPUT_COL'
+API_KEY = 'API_KEY' # APILayer key
 
 def main():
     credentials = None
@@ -31,7 +35,7 @@ def main():
         sheets = service.spreadsheets()
 
         for row in range(2,100): # Number of rows
-            result = sheets.values().get(spreadsheetId=SPREADSHEET_ID, range=f'Lapas1!A{row}').execute()
+            result = sheets.values().get(spreadsheetId=SPREADSHEET_ID, range=f'{PAGE_INPUT_COL}{row}').execute()
             values = result.get('values')
             if not values:
                 continue
@@ -44,13 +48,13 @@ def main():
                     if mobile_count > 0 and landline_count > 0:
                         break
                     number = format_number(i)
-                    dictionary = verify_number(number)
+                    dictionary = verify_number(number, API_KEY)
                     if dictionary['line_type'] == 'mobile' and mobile_count == 0:
-                        sheets.values().update(spreadsheetId=SPREADSHEET_ID, range=f'Lapas1!C{row}',
+                        sheets.values().update(spreadsheetId=SPREADSHEET_ID, range=f'{PAGE_MOBILE_COL}{row}',
                                 valueInputOption='USER_ENTERED', body = {'values':[[f'\'+{number}']]}).execute()
                         mobile_count += 1
                     if dictionary['line_type'] == 'landline' and landline_count == 0:
-                        sheets.values().update(spreadsheetId=SPREADSHEET_ID, range=f'Lapas1!B{row}',
+                        sheets.values().update(spreadsheetId=SPREADSHEET_ID, range=f'{PAGE_LANDLINE_COL}{row}',
                                     valueInputOption='USER_ENTERED', body = {'values':[[f'\'+{number}']]}).execute()
                         landline_count += 1
                 
