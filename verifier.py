@@ -1,9 +1,7 @@
 import requests
 import json
 
-def verify_number(number):
-
-    api_key = "api-key-here"
+def verify_number(number, api_key):
 
     url = f"https://api.apilayer.com/number_verification/validate?number={number}"
     headers = {'apikey': api_key}
