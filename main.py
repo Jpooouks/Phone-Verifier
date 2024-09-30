@@ -10,7 +10,7 @@ from googleapiclient.errors import HttpError
 
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
-SPREADSHEET_ID = 'Spreadsheet_ID'
+SPREADSHEET_ID = 'SPREADSHEET_ID'
 PAGE_MOBILE_COL = 'PAGE_MOBILE_COL' # Example 'Page1!C'
 PAGE_LANDLINE_COL = 'PAGE_LANDLINE_COL'
 PAGE_INPUT_COL = 'PAGE_INPUT_COL'
